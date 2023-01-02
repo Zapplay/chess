@@ -7,30 +7,42 @@
 # Король 6 x+-1 y+-1 xy+-1
 
 
-start_chessboard = {'A': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
-                    'B': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
-                    'C': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
-                    'D': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
-                    'E': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
-                    'F': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
-                    'G': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
-                    'H': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0}
-                    }
+# start_chessboard = {'A': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
+#                     'B': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
+#                     'C': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
+#                     'D': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
+#                     'E': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
+#                     'F': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
+#                     'G': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0},
+#                     'H': {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0}
+#                     }
 
-pieces_start = {('p', 'w', 2, 1), ('p', 'w', 2, 2), ('p', 'w', 2, 3), ('p', 'w', 2, 4),
-                ('p', 'w', 2, 5), ('p', 'w', 2, 6), ('p', 'w', 2, 7), ('p', 'w', 2, 8),
-                ('r', 'w', 1, 1), ('r', 'w', 1, 8), ('k', 'w', 1, 2), ('k', 'w', 1, 7),
-                ('b', 'w', 1, 3), ('b', 'w', 1, 6), ('q', 'w', 1, 4), ('g', 'w', 1, 5),
+pieces_start = [('p', 'w', 2, 1), ('p', 'w', 2, 2), ('p', 'w', 2, 3), ('p', 'w', 2, 4),
+                ('p', 'w', 2, 5), ('p', 'w', 2,
+                                   6), ('p', 'w', 2, 7), ('p', 'w', 2, 8),
+                ('r', 'w', 1, 1), ('r', 'w', 1,
+                                   8), ('k', 'w', 1, 2), ('k', 'w', 1, 7),
+                ('b', 'w', 1, 3), ('b', 'w', 1,
+                                   6), ('q', 'w', 1, 4), ('g', 'w', 1, 5),
 
-                ('p', 'b', 7, 1), ('p', 'b', 7, 2), ('p', 'b', 7, 3), ('p', 'b', 7, 4),
-                ('p', 'b', 7, 5), ('p', 'b', 7, 6), ('p', 'b', 7, 7), ('p', 'b', 7, 8),
-                ('r', 'b', 8, 1), ('r', 'b', 8, 8), ('k', 'b', 8, 2), ('k', 'b', 8, 7),
-                ('b', 'b', 8, 3), ('b', 'b', 8, 6), ('q', 'b', 8, 4), ('g', 'b', 8, 5) }
+                ('p', 'b', 7, 1), ('p', 'b', 7,
+                                   2), ('p', 'b', 7, 3), ('p', 'b', 7, 4),
+                ('p', 'b', 7, 5), ('p', 'b', 7,
+                                   6), ('p', 'b', 7, 7), ('p', 'b', 7, 8),
+                ('r', 'b', 8, 1), ('r', 'b', 8,
+                                   8), ('k', 'b', 8, 2), ('k', 'b', 8, 7),
+                ('b', 'b', 8, 3), ('b', 'b', 8, 6), ('q', 'b', 8, 4), ('g', 'b', 8, 5)]
+
+
+pieces_start_dict = {}
+for piece in pieces_start:
+    cords = str(piece[2]) + str(piece[3])
+    pieces_start_dict[cords] = piece[:2]
 
 
 class Chess:
-    def __init__(self):
-        self.pieces = pieces_start
+    def __init__(self, start_pieces):
+        self.pieces = start_pieces
         self.current_player = 0
         self.black_king_state = 0  # 0 - ничего, 1 - шах
         self.white_king_state = 0
@@ -39,13 +51,42 @@ class Chess:
         return self.current_player
 
     def get_piece_by_position(self, x, y):
-        for piece in self.pieces:
-            if x == piece[2] and y == piece[3]:
-                return piece
+        cords = str(x) + str(y)
+        if cords in self.pieces:
+            return (x, y, *self.pieces[cords])
         return 0
 
     def get_available_moves(self, piece):
-        pass
+        name, color, x, y = piece
+        if name == 'p':
+            if colour == 'w':
+                if x == 2:
+                    return (x+1, y), (x+2, y)
+                return (x+1, y)
+            if colour == 'b':
+                if x == 7:
+                    return (x-1, y), (x-2, y)
+                return (x-1, y)
 
     def move(self, piece, x, y):
-        pass
+        name, colour, cx, cy = piece
+        cords = str(cx) + str(cy)
+        newcords = str(x) + str(y)
+        if not cords in self.pieces:
+            return 0
+        if not (x, y) in self.get_available_moves(piece):
+            return 1
+        info = self.pieces[cords]
+        self.pieces.pop(cords)
+        self.pieces[newcords] = info
+
+        self.current_player = not self.current_player
+        return 2
+
+
+chess = Chess(pieces_start_dict)
+print(chess.get_piece_by_position(5, 7))
+print(chess.get_available_moves(piece))
+print(chess.get_current_player())
+print(chess.move(1, 1, 1))
+print(chess.get_current_player())
