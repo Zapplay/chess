@@ -12,7 +12,6 @@ pieces_start = [('p', 'w', 2, 1), ('p', 'w', 2, 2), ('p', 'w', 2, 3), ('p', 'w',
                                    8), ('k', 'w', 1, 2), ('k', 'w', 1, 7),
                 ('b', 'w', 1, 3), ('b', 'w', 1,
                                    6), ('q', 'w', 1, 4), ('g', 'w', 1, 5),
-
                 ('p', 'b', 7, 1), ('p', 'b', 7,
                                    2), ('p', 'b', 7, 3), ('p', 'b', 7, 4),
                 ('p', 'b', 7, 5), ('p', 'b', 7,
@@ -41,20 +40,36 @@ class Chess:
     def get_piece_by_position(self, x, y):
         cords = str(x) + str(y)
         if cords in self.pieces:
-            return (x, y, *self.pieces[cords])
+            return (*self.pieces[cords], x, y)
         return 0
 
     def get_available_moves(self, piece):
         name, color, x, y = piece
         if name == 'p':
-            if colour == 'w':
+            if color == 'w':
                 if x == 2:
                     return (x+1, y), (x+2, y)
                 return (x+1, y)
-            if colour == 'b':
+            if color == 'b':
                 if x == 7:
                     return (x-1, y), (x-2, y)
                 return (x-1, y)
+        elif name == 'r':
+            moves = []
+            for i in range(1,y):
+                moves.append((x,i))
+            for j in range(y+1,8+1):
+                moves.append((j,i))
+            for n in range(1,x):
+                moves.append((n,y))
+            for k in range(x+1,8+1):
+                moves.append((k,y))
+            return moves
+        elif name == "k":
+            pass
+
+            
+
 
     def move(self, piece, x, y):
         name, colour, cx, cy = piece
@@ -71,10 +86,30 @@ class Chess:
         self.current_player = not self.current_player
         return 2
 
+def render(game):
+    for i in range(1,9):
+        row = []
+        for j in range(1,9):
+            cords = str(i) + str(j)
+            if cords in game.pieces:
+                row.append(game.pieces[cords][0]+game.pieces[cords][1])
+            else:
+                row.append('[]')
+        print(row)
+
 
 chess = Chess(pieces_start_dict)
-print(chess.get_piece_by_position(5, 7))
+render(chess)
+print(chess.get_piece_by_position(2, 1))
+piece = chess.get_piece_by_position(2, 1)
 print(chess.get_available_moves(piece))
-print(chess.get_current_player())
-print(chess.move(1, 1, 1))
-print(chess.get_current_player())
+print(chess.move(piece, 3, 1))
+print(chess.get_piece_by_position(3, 1))
+print(chess.get_piece_by_position(2, 1))
+render(chess)
+
+
+# piece = chess.get_piece_by_position(8, 8)
+# print(piece)
+# print(chess.get_available_moves(piece))
+
